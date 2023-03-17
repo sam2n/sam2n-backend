@@ -1,0 +1,34 @@
+# Logs
+logging:
+  level:
+    #    ROOT: DEBUG
+    org.hibernate.SQL: debug
+    by.proj51: DEBUG
+    org.springframework.security: TRACE
+
+# Spring
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:file:./build/h2db/db/sam2n
+  sql:
+    init:
+      platform: h2
+# Security
+  security:
+    user:
+      name: user
+      password: password
+
+# Application level properties
+sam2n:
+  fake-data:
+    generate: true # fake data is generated depends this parameter
+    amount-of:
+      companies: 8
+      money-recipients: 5
+      users: 30
+      per-user-activities: 3
+      donations: 30
