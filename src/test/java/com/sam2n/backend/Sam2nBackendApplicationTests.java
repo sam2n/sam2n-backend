@@ -5,13 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class Sam2nBackendApplicationTests {
-
     @Test
     void contextLoads() {
-
-
     }
-
-
-
 }
