@@ -27,12 +27,12 @@ public class FakeUserService {
     private final Faker faker = Faker.instance();
     private final UserRepository userRepository;
     private final FakeWalletService fakeWalletService;
-    public List<User> generateAndSave(List<Company> companies, Authority userAuthority, int amount) {
+    public List<User> generateAndSave(Authority userAuthority, int amount) {
         List<User> fakeUsers = userRepository.findAll();
         if (fakeUsers.isEmpty()) {
             // generate and save fake users
             fakeUsers = IntStream.rangeClosed(1, amount)
-                    .mapToObj(value -> generateFakeUser(companies.get(random.nextInt(companies.size() - 1)), userAuthority))
+                    .mapToObj(value -> generateFakeUser(userAuthority))
                     .toList();
             fakeUsers.forEach(user -> log.debug(">>> Generated fake user: " + user.toString()));
 
@@ -50,7 +50,7 @@ public class FakeUserService {
         if (fakeAdmins.isEmpty()) {
             // generate and save fake admins 1 per company
             fakeAdmins = IntStream.rangeClosed(0, companies.size() - 1)
-                    .mapToObj(value -> generateFakeUser(companies.get(value), adminAuthority))
+                    .mapToObj(value -> generateFakeUser(adminAuthority))
                     .toList();
             fakeAdmins = userRepository.saveAll(fakeAdmins);
             log.info(">>> Were generated and saved fake admins. Amount: " + fakeAdmins.size());
