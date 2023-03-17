@@ -1,0 +1,11 @@
+# Spring
+spring:
+  application:
+    name: sam2n
+  profiles:
+    default: local
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: com.sam2n.backend.config.TableNamingStrategy
