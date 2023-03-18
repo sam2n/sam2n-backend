@@ -47,7 +47,7 @@ public class LocalFakeDataInitializer implements CommandLineRunner {
                 .filter(a -> a.getName().equalsIgnoreCase(USER.getName()))
                 .findFirst()
                 .orElse(null);
-        List<User> fakeUsers = fakeUserService.generateAndSave(userAuthority, fakeDataAmount.getUsers());
+        List<User> fakeUsers = fakeUserService.generateAndSave(fakeCompanies, userAuthority, fakeDataAmount.getUsers());
 
         Authority adminAuthority = realAuthorities.stream()
                 .filter(a -> a.getName().equalsIgnoreCase(ADMIN.getName()))

@@ -2,9 +2,10 @@
 logging:
   level:
     #    ROOT: DEBUG
-    org.hibernate.SQL: debug
     by.proj51: DEBUG
     org.springframework.security: TRACE
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
 
 # Spring
 spring:
