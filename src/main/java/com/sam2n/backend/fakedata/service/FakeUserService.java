@@ -27,12 +27,12 @@ public class FakeUserService {
     private final Faker faker = Faker.instance();
     private final UserRepository userRepository;
     private final FakeWalletService fakeWalletService;
-    public List<User> generateAndSave(Authority userAuthority, int amount) {
+    public List<User> generateAndSave(List<Company> companies, Authority userAuthority, int amount) {
         List<User> fakeUsers = userRepository.findAll();
         if (fakeUsers.isEmpty()) {
             // generate and save fake users
             fakeUsers = IntStream.rangeClosed(1, amount)
-                    .mapToObj(value -> generateFakeUser(userAuthority))
+                    .mapToObj(value -> generateFakeUser(companies.get(random.nextInt(companies.size() - 1)), userAuthority))
                     .toList();
             fakeUsers.forEach(user -> log.debug(">>> Generated fake user: " + user.toString()));
 
@@ -50,7 +50,7 @@ public class FakeUserService {
         if (fakeAdmins.isEmpty()) {
             // generate and save fake admins 1 per company
             fakeAdmins = IntStream.rangeClosed(0, companies.size() - 1)
-                    .mapToObj(value -> generateFakeUser(adminAuthority))
+                    .mapToObj(value -> generateFakeUser(companies.get(value), adminAuthority))
                     .toList();
             fakeAdmins = userRepository.saveAll(fakeAdmins);
             log.info(">>> Were generated and saved fake admins. Amount: " + fakeAdmins.size());
@@ -58,13 +58,14 @@ public class FakeUserService {
         return fakeAdmins;
     }
 
-    private User generateFakeUser(Authority authority) {
+    private User generateFakeUser(Company fakeCompany, Authority authority) {
         User user = new User();
         user.setActivated(true);
         user.setFirstName(faker.name().firstName());
         user.setLastName(faker.name().lastName());
         user.setLogin(user.getLastName().trim().toLowerCase().replace(" ", "_") + random.nextInt(1000));
         user.setPassword(faker.internet().password());
+        user.setCompany(fakeCompany);
         user.setEmail(faker.internet().emailAddress());
         user.setAuthorities(Set.of(authority));
         user.setImageUrl(faker.internet().avatar());

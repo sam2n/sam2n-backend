@@ -1,6 +1,9 @@
 package com.sam2n.backend.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +11,6 @@ import lombok.ToString;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -27,9 +28,4 @@ public class Company extends AbstractAuditingEntity implements Serializable {
     private String description;
     private String imageUrl;
     private String url;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
-    @ToString.Exclude
-    private Set<User> users = new HashSet<>();
 }

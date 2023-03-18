@@ -1,6 +1,7 @@
 package com.sam2n.backend.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sam2n.backend.config.DataBaseConfig;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -70,6 +71,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JsonIgnore
     @ToString.Exclude
     private Wallet wallet;
+    @ManyToOne
+    @JsonIgnoreProperties(value = {"company_id"}, allowSetters = true)
+    @ToString.Exclude
+    private Company company;
     @JsonIgnore
     @ManyToMany
     @JoinTable(
