@@ -27,6 +27,8 @@ public class FakeUserService {
     private final Faker faker = Faker.instance();
     private final UserRepository userRepository;
     private final FakeWalletService fakeWalletService;
+//    private final PasswordEncoder passwordEncoder;
+
     public List<User> generateAndSave(List<Company> companies, Authority userAuthority, int amount) {
         List<User> fakeUsers = userRepository.findAll();
         if (fakeUsers.isEmpty()) {
@@ -59,19 +61,20 @@ public class FakeUserService {
     }
 
     private User generateFakeUser(Company fakeCompany, Authority authority) {
-        User user = new User();
-        user.setActivated(true);
-        user.setFirstName(faker.name().firstName());
-        user.setLastName(faker.name().lastName());
-        user.setLogin(user.getLastName().trim().toLowerCase().replace(" ", "_") + random.nextInt(1000));
-        user.setPassword(faker.internet().password());
-        user.setCompany(fakeCompany);
-        user.setEmail(faker.internet().emailAddress());
-        user.setAuthorities(Set.of(authority));
-        user.setImageUrl(faker.internet().avatar());
-        user.setActivationKey(faker.number().digits(20));
-        user.setResetKey(faker.number().digits(20));
-        user.setCreatedBy(CREATED_BY_USER);
-        return user;
+        String login = faker.name().lastName().trim().toLowerCase().replace(" ", "_") + random.nextInt(1000);
+        return User.builder()
+                .activated(true)
+                .firstName(faker.name().firstName())
+                .lastName(faker.name().lastName())
+                .login(login)
+                .password(login)
+                .company(fakeCompany)
+                .email(faker.internet().emailAddress())
+                .authorities(Set.of(authority))
+                .imageUrl(faker.internet().avatar())
+                .activationKey(faker.number().digits(20))
+                .resetKey(faker.number().digits(20))
+                .createdBy(CREATED_BY_USER)
+                .build();
     }
 }

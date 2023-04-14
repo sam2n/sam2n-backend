@@ -40,12 +40,11 @@ public class FakeCompanyService {
     }
 
     private Company generateFakeCompany() {
-        Company company = new Company();
-        company.setName(faker.company().name());
-        company.setUrl(faker.company().url());
-        company.setDescription(faker.company().catchPhrase());
-        company.setCreatedBy(CREATED_BY_USER);
-        company.setImageUrl(faker.internet().avatar());
-        return company;
+        return Company.builder()
+                .name(faker.company().name())
+                .url(faker.company().url()).description(faker.company().catchPhrase())
+                .createdBy(CREATED_BY_USER)
+                .imageUrl(faker.internet().avatar())
+                .build();
     }
 }

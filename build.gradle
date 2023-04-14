@@ -1,14 +1,14 @@
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version '3.0.3'
-    id 'io.spring.dependency-management' version '1.1.0'
-    id 'org.hibernate.orm' version '6.1.7.Final'
-    id 'org.graalvm.buildtools.native' version '0.9.18'
+    id "java"
+    id "org.springframework.boot" version "${springBootVersion}"
+    id "io.spring.dependency-management" version "1.1.0"
+    id "org.hibernate.orm" version "${hibernateVersion}"
+    id "org.graalvm.buildtools.native" version"${graalvmBuildtoolsVersion}"
 }
 
-group = 'com.sam2n'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+group = "com.sam2n"
+version = "0.0.1-SNAPSHOT"
+sourceCompatibility = "17"
 
 configurations {
     compileOnly {
@@ -21,31 +21,50 @@ repositories {
 }
 
 ext {
-    set('testcontainersVersion', "1.17.6")
+    set("testcontainersVersion", "${testContainersVersion}")
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-//    implementation 'org.springframework.security:spring-security-crypto:6.0.2'
-    implementation 'org.springframework.boot:spring-boot-starter-security' // was commented till implementation task
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'com.github.javafaker:javafaker:1.0.2'
-    implementation 'io.hypersistence:hypersistence-utils-hibernate-60:3.2.0'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
-    implementation 'org.springdoc:springdoc-openapi-starter-common:2.0.3'
-    implementation 'org.apache.commons:commons-collections4:4.4'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'com.mysql:mysql-connector-j'
-    runtimeOnly 'com.h2database:h2'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'org.testcontainers:junit-jupiter'
-    testImplementation 'org.testcontainers:mysql'
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
+
+    // fake data generator
+    implementation "com.github.javafaker:javafaker:1.0.2"
+    // entity -> table name conversion
+    implementation "io.hypersistence:hypersistence-utils-hibernate-60:3.2.0"
+    // openapi
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${openapiVersion}"
+    implementation "org.springdoc:springdoc-openapi-starter-common:${openapiVersion}"
+    implementation "org.apache.commons:commons-collections4:4.4"
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-client"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+
+    implementation "io.jsonwebtoken:jjwt-api:0.11.5"
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    implementation "com.amazonaws:aws-java-sdk-cognitoidp:${awsSdkVersion}"
+
+    compileOnly "org.projectlombok:lombok"
+
+    developmentOnly "org.springframework.boot:spring-boot-devtools"
+
+    runtimeOnly "com.mysql:mysql-connector-j"
+    runtimeOnly "com.h2database:h2"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
+
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor "org.projectlombok:lombok"
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.security:spring-security-test"
+    testImplementation "org.testcontainers:junit-jupiter"
+    testImplementation "org.testcontainers:mysql"
+
 }
 
 dependencyManagement {
@@ -54,7 +73,7 @@ dependencyManagement {
     }
 }
 
-tasks.named('test') {
+tasks.named("test") {
     useJUnitPlatform()
 }
 

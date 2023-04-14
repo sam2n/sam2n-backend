@@ -3,6 +3,7 @@ package com.sam2n.backend.fakedata.service;
 import com.sam2n.backend.domain.Activity;
 import com.sam2n.backend.domain.MoneyRecipient;
 import com.sam2n.backend.domain.Transaction;
+import com.sam2n.backend.domain.Transaction.TransactionBuilder;
 import com.sam2n.backend.domain.User;
 import com.sam2n.backend.domain.enumeration.TransactionState;
 import com.sam2n.backend.domain.enumeration.TransactionType;
@@ -66,28 +67,29 @@ public class FakeTransactionService {
     }
 
     private Transaction generateFakeTransaction(TransactionType transactionType, User user, Activity activity, MoneyRecipient moneyRecipient) {
-        Transaction transaction = new Transaction();
-        transaction.setTransactionType(transactionType);
-
-        transaction.setAmount(random.nextDouble(1, 10));
-        transaction.setWallet(user.getWallet());
-        transaction.setCreatedBy(CREATED_BY_USER);
+        TransactionBuilder transactionBuilder = Transaction.builder()
+                .transactionType(transactionType)
+                .amount(random.nextDouble(1, 10))
+                .wallet(user.getWallet())
+                .createdBy(CREATED_BY_USER);
 
         if (Objects.requireNonNull(transactionType) == TransactionType.DONATION) {
-            transaction.setReasonId(moneyRecipient.getId());
             TransactionState randomTransactionState = TransactionState.values()[random.nextInt(TransactionState.values().length)];
-            transaction.setTransactionState(randomTransactionState);
-            Instant dateOfPayment = TransactionState.PAID == randomTransactionState ?
-                    Instant.now().minus(Duration.ofDays(random.nextInt(100))) :
-                    null;
-            transaction.setDateOfPayment(dateOfPayment);
-            transaction.setMessage("Donate for " + moneyRecipient.getName() + " from user: " + user.getLogin());
+            transactionBuilder
+                    .reasonId(moneyRecipient.getId())
+                    .transactionState(randomTransactionState)
+                    .dateOfPayment(
+                            TransactionState.PAID == randomTransactionState
+                            ? Instant.now().minus(Duration.ofDays(random.nextInt(100)))
+                            : null)
+                    .message("Donate for " + moneyRecipient.getName() + " from user: " + user.getLogin());
         } else {
-            transaction.setTransactionState(TransactionState.PAID);
-            transaction.setReasonId(activity.getId());
-            transaction.setMessage("Money transformed from activity " + activity.getTitle());
+            transactionBuilder
+                    .transactionState(TransactionState.PAID)
+                    .reasonId(activity.getId())
+                    .message("Money transformed from activity " + activity.getTitle());
         }
 
-        return transaction;
+        return transactionBuilder.build();
     }
 }

@@ -7,7 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Sam2nBackendApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(Sam2nBackendApplication.class, args);
+
+
     }
 
 }

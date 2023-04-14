@@ -5,17 +5,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sam2n.backend.domain.enumeration.ActivityState;
 import com.sam2n.backend.domain.enumeration.SportType;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 @Getter
 @Setter
 @ToString
@@ -25,8 +27,9 @@ public class Activity extends AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false, updatable = false)
+    private UUID id;
     private String title;
     private Double distance;
     private Double avgPace;

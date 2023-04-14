@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 @Aspect
 @RequiredArgsConstructor
-public class LoggingAOPConfig {
+public class LoggingAopConfig {
 
     private final Environment env;
 
@@ -34,7 +34,7 @@ public class LoggingAOPConfig {
     @Pointcut("within(com.sam2n.backend.repository..*)"
             + " || within(com.sam2n.backend.service..*)"
             + " || within(com.sam2n.backend.controller..*)"
-            + " || within(com.sam2n.backend.config.fakedata.*)" )
+            + " || within(com.sam2n.backend.fakedata.*)" )
     public void applicationPackagePointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.
     }

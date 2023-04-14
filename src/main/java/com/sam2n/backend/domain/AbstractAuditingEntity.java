@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -21,6 +20,9 @@ import java.time.Instant;
  * Base abstract class for entities which will hold definitions for created, last modified, created by,
  * last modified by attributes.
  */
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @MappedSuperclass
@@ -36,6 +38,7 @@ public abstract class AbstractAuditingEntity implements Serializable {
     @CreatedDate
     @Column(updatable = false)
     @JsonIgnore
+    @Builder.Default
     private Instant createdDate = Instant.now();
     @LastModifiedBy
     @Column(length = 50)
@@ -44,5 +47,6 @@ public abstract class AbstractAuditingEntity implements Serializable {
     @LastModifiedDate
     @Column()
     @JsonIgnore
+    @Builder.Default
     private Instant lastModifiedDate = Instant.now();
 }

@@ -2,11 +2,10 @@
 logging:
   level:
     #    ROOT: DEBUG
-    by.proj51: DEBUG
-    org.springframework.security: TRACE
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type: TRACE
-
+    com.sam2n.backend: debug
+    org.springframework.security: trace
+    sql: debug
+    org.hibernate.orm.jdbc.bind: trace
 # Spring
 spring:
   h2:
@@ -14,14 +13,30 @@ spring:
       enabled: true
   datasource:
     url: jdbc:h2:file:./build/h2db/db/sam2n
+    driver-class-name: org.h2.Driver
   sql:
     init:
       platform: h2
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: com.sam2n.backend.config.TableNamingStrategy
+    properties:
+      hibernate:
+        format_sql: true
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
 # Security
   security:
     user:
       name: user
       password: password
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_gzGRpukuj
+          jwk-set-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_gzGRpukuj/.well-known/jwks.json
 
 # Application level properties
 sam2n:
@@ -33,3 +48,15 @@ sam2n:
       users: 30
       per-user-activities: 3
       donations: 30
+
+management:
+  server:
+    port: 9669
+  endpoints:
+    web:
+      exposure:
+        include: openapi, swagger-ui
+
+springdoc:
+  use-management-port: true
+  show-actuator: true

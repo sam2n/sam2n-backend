@@ -39,12 +39,12 @@ public class FakeMoneyRecipientService {
     }
 
     private MoneyRecipient generateFakeMoneyRecipient() {
-        MoneyRecipient moneyRecipient = new MoneyRecipient();
-        moneyRecipient.setName(faker.company().name());
-        moneyRecipient.setAvatarUrl(faker.internet().avatar());
-        moneyRecipient.setDescription(faker.company().catchPhrase());
-        moneyRecipient.setAccountDetails(faker.company().catchPhrase());
-        moneyRecipient.setSiteUrl(faker.internet().url());
-        return moneyRecipient;
+        return MoneyRecipient.builder()
+                .name(faker.company().name())
+                .avatarUrl(faker.internet().avatar())
+                .description(faker.company().catchPhrase())
+                .accountDetails(faker.company().catchPhrase())
+                .siteUrl(faker.internet().url())
+                .build();
     }
 }

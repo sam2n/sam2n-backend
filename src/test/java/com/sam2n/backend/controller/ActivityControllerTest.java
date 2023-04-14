@@ -1,7 +1,7 @@
 package com.sam2n.backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sam2n.backend.config.SecurityConfig;
+import com.sam2n.backend.config.security.SecurityConfig;
 import com.sam2n.backend.domain.Activity;
 import com.sam2n.backend.service.ActivityService;
 import org.junit.jupiter.api.Test;

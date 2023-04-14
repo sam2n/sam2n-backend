@@ -1,18 +1,17 @@
 package com.sam2n.backend.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 @Getter
 @Setter
 @ToString
@@ -21,9 +20,10 @@ public class Company extends AbstractAuditingEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @EqualsAndHashCode.Include
-    private Long id;
+    @Column(nullable = false, updatable = false)
+    private UUID id;
     private String name;
     private String description;
     private String imageUrl;

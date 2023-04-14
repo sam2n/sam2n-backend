@@ -47,13 +47,13 @@ public class FakeFitnessAccountService {
     }
 
     private FitnessAccount generateFakeFitnessAccount(User user, FitnessAccountType fitnessAccountType) {
-        FitnessAccount fa = new FitnessAccount();
-        fa.setFitnessAccountType(fitnessAccountType);
-        fa.setUser(user);
-        fa.setUrl(faker.internet().url());
-        fa.setIsActive(random.nextBoolean());
-        fa.setNickname(faker.funnyName().name());
-        fa.setCreatedBy(CREATED_BY_USER);
-        return fa;
+        return FitnessAccount.builder()
+                .fitnessAccountType(fitnessAccountType)
+                .user(user)
+                .url(faker.internet().url())
+                .isActive(random.nextBoolean())
+                .nickname(faker.funnyName().name())
+                .createdBy(CREATED_BY_USER)
+                .build();
     }
 }

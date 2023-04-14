@@ -47,22 +47,20 @@ public class FakeActivityService {
     }
 
     private Activity generateFakeActivityForFitnessAccount(FitnessAccount fitnessAccount) {
-        Activity fakeActivity = new Activity();
-        fakeActivity.setAccount(fitnessAccount);
-        // get random activity state
-        fakeActivity.setActivityState(ActivityState.values()[random.nextInt(ActivityState.values().length)]);
-        fakeActivity.setCreatedBy(CREATED_BY_USER);
-        fakeActivity.setCalories(random.nextInt(100, 1000));
-        fakeActivity.setDistance(random.nextDouble(1, 20));
-        fakeActivity.setTitle("Activity on the street: " + faker.address().streetName());
-        fakeActivity.setLink(faker.internet().url());
-        fakeActivity.setSportType(SportType.values()[random.nextInt(SportType.values().length)]);
-        fakeActivity.setMovingTime(Duration.ofMinutes(random.nextInt(100)));
-        fakeActivity.setAvgPace(random.nextDouble(4, 10));
-        fakeActivity.setAvgHeartRate(random.nextDouble(60, 240));
-        // random date between now and -100 days from now
-        fakeActivity.setActivityDate(Instant.now().minus(Duration.ofDays(random.nextInt(100))));
-
-        return fakeActivity;
+        return Activity.builder()
+                .account(fitnessAccount)
+                .activityState(ActivityState.values()[random.nextInt(ActivityState.values().length)])
+                .createdBy(CREATED_BY_USER)
+                .calories(random.nextInt(100, 1000))
+                .distance(random.nextDouble(1, 20))
+                .title("Activity on the street: " + faker.address().streetName())
+                .link(faker.internet().url())
+                .sportType(SportType.values()[random.nextInt(SportType.values().length)])
+                .movingTime(Duration.ofMinutes(random.nextInt(100)))
+                .avgPace(random.nextDouble(4, 10))
+                .avgHeartRate(random.nextDouble(60, 240))
+                // random date between now and -100 days from now
+                .activityDate(Instant.now().minus(Duration.ofDays(random.nextInt(100))))
+                .build();
     }
 }

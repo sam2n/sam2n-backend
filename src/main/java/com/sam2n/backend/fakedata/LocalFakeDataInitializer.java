@@ -8,19 +8,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-import static com.sam2n.backend.config.SecurityConfig.Authority.ADMIN;
-import static com.sam2n.backend.config.SecurityConfig.Authority.USER;
+import static com.sam2n.backend.config.security.AuthorityType.ADMIN;
+import static com.sam2n.backend.config.security.AuthorityType.USER;
 
 @RequiredArgsConstructor
 @Slf4j
-@Component
+@Configuration
 @ConditionalOnProperty(prefix = "sam2n.fake-data", name = "generate", havingValue = "true")
 @EnableConfigurationProperties(FakeDataAmountConfigurationProperties.class)
-public class LocalFakeDataInitializer implements CommandLineRunner {
+public class LocalFakeDataInitializer {
     private final FakeCompanyService fakeCompanyService;
     private final FakeMoneyRecipientService fakeMoneyRecipientService;
     private final AuthorityService authorityService;
@@ -29,14 +30,13 @@ public class LocalFakeDataInitializer implements CommandLineRunner {
     private final FakeActivityService fakeActivityService;
     private final FakeTransactionService fakeTransactionService;
     private final FakeDataAmountConfigurationProperties fakeDataAmount;
-    @Override
-    public void run(String... args) throws Exception {
-        log.warn(">>> Process of generation fake data has been started");
-        int amountOfGeneratedRows = generateFakeDBData();
-        log.warn(">>> Process of generation fake data is finished. Amount of generated rows is: " + amountOfGeneratedRows);
+
+    @Bean
+    public CommandLineRunner initFakeData() {
+        return args -> generateFakeDBData();
     }
 
-    public int generateFakeDBData() {
+    private int generateFakeDBData() {
         /* ORGANISATIONS */
         List<Company> fakeCompanies = fakeCompanyService.generateAndSave(fakeDataAmount.getCompanies());
         List<MoneyRecipient> fakeMoneyRecipients = fakeMoneyRecipientService.generateAndSave(fakeDataAmount.getMoneyRecipients());
@@ -63,6 +63,11 @@ public class LocalFakeDataInitializer implements CommandLineRunner {
                 .generateAndPersistFakeTransactionsWithActivities(fakeActivities);
         List<Transaction> fakeTransactionsWithDonations = fakeTransactionService
                 .generateAndPersistFakeTransactionsWithDonations(fakeMoneyRecipients, fakeUsers, fakeDataAmount.getDonations());
+
+        log.debug(">>> Available credentials of users to login: ");
+        fakeUsers.forEach(u -> log.debug(">>>      User name: " + u.getLogin() + ", password: " + u.getLogin()));
+        log.debug(">>> Available credentials of admins to login: ");
+        fakeAdmins.forEach(a -> log.debug(">>>      Admin name: " + a.getLogin() + ", password: " + a.getLogin()));
 
         return /* ORGANISATIONS */ fakeCompanies.size() + fakeMoneyRecipients.size()
                 /* USERS & ACCOUNTS */ + realAuthorities.size() + fakeUsers.size() + fakeAdmins.size() + fakeFitnessAccounts.size() + fakeActivities.size()

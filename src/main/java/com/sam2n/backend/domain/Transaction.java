@@ -3,16 +3,18 @@ package com.sam2n.backend.domain;
 import com.sam2n.backend.domain.enumeration.TransactionState;
 import com.sam2n.backend.domain.enumeration.TransactionType;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 @Getter
 @Setter
 @ToString
@@ -21,9 +23,10 @@ public class Transaction extends AbstractAuditingEntity implements Serializable 
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @EqualsAndHashCode.Include
-    private Long id;
+    @Column(nullable = false, updatable = false)
+    private UUID id;
     private Double amount;
     private String message;
     @Enumerated(EnumType.STRING)
@@ -35,7 +38,7 @@ public class Transaction extends AbstractAuditingEntity implements Serializable 
         TRANSFORMED_ACTIVITY - id from Activity entity
         DONATION - id from MoneyRecipient entity
      */
-    private Long reasonId;
+    private UUID reasonId;
     @ManyToOne
     private Wallet wallet;
 }

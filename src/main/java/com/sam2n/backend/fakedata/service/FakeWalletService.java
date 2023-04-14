@@ -30,10 +30,9 @@ public class FakeWalletService {
     }
 
     private Wallet generateWallet(User user) {
-        Wallet wallet = new Wallet();
-        wallet.setAmount(BigDecimal.valueOf(random.nextInt(100, 10000)));
-        wallet.setUser(user);
-        wallet.setCreatedBy(CREATED_BY_USER);
-        return wallet;
+        return Wallet.builder()
+                .amount(BigDecimal.valueOf(random.nextInt(100, 10000)))
+                .user(user).createdBy(CREATED_BY_USER)
+                .build();
     }
 }
