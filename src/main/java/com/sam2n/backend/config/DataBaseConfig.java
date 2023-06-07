@@ -11,8 +11,5 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class DataBaseConfig {
 
-    // Regex for acceptable logins
-    public static final String CREATED_BY_USER = "FAKER";
-    public static final String TABLE_NAME_PREFIX = "SAM2N_";
 
 }

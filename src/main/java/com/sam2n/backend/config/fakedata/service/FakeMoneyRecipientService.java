@@ -1,6 +1,5 @@
-package com.sam2n.backend.fakedata.service;
+package com.sam2n.backend.config.fakedata.service;
 
-import com.github.javafaker.Faker;
 import com.sam2n.backend.domain.MoneyRecipient;
 import com.sam2n.backend.repository.MoneyRecipientRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,33 +17,32 @@ import static com.sam2n.backend.config.Profiles.LOCAL;
 @RequiredArgsConstructor
 @Slf4j
 public class FakeMoneyRecipientService {
-    private final Faker faker = Faker.instance();
     private final MoneyRecipientRepository moneyRecipientRepository;
 
     public List<MoneyRecipient> generateAndSave(int amount) {
-        List<MoneyRecipient> fakeMoneyRecipient = generateFakeMoneyRecipient(amount);
+        List<MoneyRecipient> fakeMoneyRecipient = generateFakeMoneyRecipients(amount);
         moneyRecipientRepository.saveAll(fakeMoneyRecipient);
         log.info(">>> Were generated and saved fake money recipients. Amount: " + fakeMoneyRecipient.size());
         return fakeMoneyRecipient;
     }
 
-    public List<MoneyRecipient> generateFakeMoneyRecipient(int amount) {
+    public List<MoneyRecipient> generateFakeMoneyRecipients(int amount) {
         List<MoneyRecipient> fakeMoneyRecipient = moneyRecipientRepository.findAll();
         if (fakeMoneyRecipient.isEmpty()) {
             fakeMoneyRecipient = IntStream.rangeClosed(1, amount)
-                    .mapToObj(value -> generateFakeMoneyRecipient())
+                    .mapToObj(this::generateFakeMoneyRecipient)
                     .toList();
         }
         return fakeMoneyRecipient;
     }
 
-    private MoneyRecipient generateFakeMoneyRecipient() {
+    private MoneyRecipient generateFakeMoneyRecipient(int number) {
         return MoneyRecipient.builder()
-                .name(faker.company().name())
-                .avatarUrl(faker.internet().avatar())
-                .description(faker.company().catchPhrase())
-                .accountDetails(faker.company().catchPhrase())
-                .siteUrl(faker.internet().url())
+                .name("MoneyRecipient")
+                .avatarUrl("https://MoneyRecipient" + number + ".com/image" + number + ".jpg")
+                .description("Some description for the fake money recipient with id = " + number)
+                .accountDetails("Some account details for the fake money recipient with id = " + number)
+                .siteUrl("https://MoneyRecipient" + number + ".com")
                 .build();
     }
 }

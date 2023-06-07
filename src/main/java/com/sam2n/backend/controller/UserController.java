@@ -20,7 +20,6 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsersV1() {
-        log.debug("REST request to get all Users");
 
         List<User> allUsers = userService.getAll();
         return ResponseEntity.ok().body(allUsers);

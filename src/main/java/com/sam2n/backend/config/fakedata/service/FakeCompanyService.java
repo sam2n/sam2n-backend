@@ -1,6 +1,5 @@
-package com.sam2n.backend.fakedata.service;
+package com.sam2n.backend.config.fakedata.service;
 
-import com.github.javafaker.Faker;
 import com.sam2n.backend.domain.Company;
 import com.sam2n.backend.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,15 +10,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static com.sam2n.backend.config.DataBaseConfig.CREATED_BY_USER;
 import static com.sam2n.backend.config.Profiles.LOCAL;
+import static com.sam2n.backend.config.fakedata.LocalFakeDataInitializer.FAKER_USER;
 
 @Service
 @Profile(LOCAL)
 @RequiredArgsConstructor
 @Slf4j
 public class FakeCompanyService {
-    private final Faker faker = Faker.instance();
     private final CompanyRepository companyRepository;
 
     public List<Company> generateAndSave(int amount) {
@@ -33,18 +31,19 @@ public class FakeCompanyService {
         List<Company> fakeCompanies = companyRepository.findAll();
         if (fakeCompanies.isEmpty()) {
             fakeCompanies = IntStream.rangeClosed(1, amount)
-                    .mapToObj(value -> generateFakeCompany())
+                    .mapToObj(this::generateFakeCompany)
                     .toList();
         }
         return fakeCompanies;
     }
 
-    private Company generateFakeCompany() {
+    private Company generateFakeCompany(int index) {
         return Company.builder()
-                .name(faker.company().name())
-                .url(faker.company().url()).description(faker.company().catchPhrase())
-                .createdBy(CREATED_BY_USER)
-                .imageUrl(faker.internet().avatar())
+                .name("Company " + index)
+                .url("http://company" + index + ".com/")
+                .description("Just do it for company " + index)
+                .createdBy(FAKER_USER)
+                .imageUrl("http://company" + index + ".com/images/" + index + ".jpg")
                 .build();
     }
 }

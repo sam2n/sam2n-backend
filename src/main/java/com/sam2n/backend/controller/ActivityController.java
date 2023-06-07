@@ -21,8 +21,8 @@ public class ActivityController {
 
     @PostMapping
     public ResponseEntity<Activity> addActivityV1(@RequestBody URL url) {
-        Activity activity = activityService.addNewActivity(url.toString());
 
+        Activity activity = activityService.addNewActivity(url.toString());
         return ResponseEntity.ok(activity);
     }
 }

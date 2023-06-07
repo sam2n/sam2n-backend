@@ -1,6 +1,5 @@
-package com.sam2n.backend.fakedata.service;
+package com.sam2n.backend.config.fakedata.service;
 
-import com.github.javafaker.Faker;
 import com.sam2n.backend.domain.FitnessAccount;
 import com.sam2n.backend.domain.User;
 import com.sam2n.backend.domain.enumeration.FitnessAccountType;
@@ -14,8 +13,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import static com.sam2n.backend.config.DataBaseConfig.CREATED_BY_USER;
 import static com.sam2n.backend.config.Profiles.LOCAL;
+import static com.sam2n.backend.config.fakedata.LocalFakeDataInitializer.FAKER_USER;
 
 @Service
 @Profile(LOCAL)
@@ -23,7 +22,6 @@ import static com.sam2n.backend.config.Profiles.LOCAL;
 @Slf4j
 public class FakeFitnessAccountService {
     private static final Random random = new Random();
-    private final Faker faker = Faker.instance();
     private final FitnessAccountRepository fitnessAccountRepository;
 
     public List<FitnessAccount> generateAndSave(List<User> users) {
@@ -42,18 +40,18 @@ public class FakeFitnessAccountService {
     private List<FitnessAccount> generateAndSave(User user) {
         int randomAmount = random.nextInt(FitnessAccountType.values().length);
         return IntStream.rangeClosed(1, randomAmount)
-                .mapToObj(n -> generateFakeFitnessAccount(user, FitnessAccountType.values()[random.nextInt(FitnessAccountType.values().length)]))
+                .mapToObj(n -> generateFakeFitnessAccount(user, FitnessAccountType.values()[random.nextInt(FitnessAccountType.values().length)], n))
                 .toList();
     }
 
-    private FitnessAccount generateFakeFitnessAccount(User user, FitnessAccountType fitnessAccountType) {
+
+    private FitnessAccount generateFakeFitnessAccount(User user, FitnessAccountType fitnessAccountType, int activityNumber) {
         return FitnessAccount.builder()
                 .fitnessAccountType(fitnessAccountType)
                 .user(user)
-                .url(faker.internet().url())
+                .url("https://" + fitnessAccountType.name().toLowerCase() + ".com/" + user.getLogin() + "/" + activityNumber)
                 .isActive(random.nextBoolean())
-                .nickname(faker.funnyName().name())
-                .createdBy(CREATED_BY_USER)
+                .createdBy(FAKER_USER)
                 .build();
     }
 }

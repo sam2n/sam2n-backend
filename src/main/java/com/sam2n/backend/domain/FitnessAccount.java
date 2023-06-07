@@ -28,7 +28,6 @@ public class FitnessAccount extends AbstractAuditingEntity implements Serializab
     @Enumerated(EnumType.STRING)
     private FitnessAccountType fitnessAccountType;
     private String url;
-    private String nickname;
     private Boolean isActive;
     @ManyToOne
     private User user;

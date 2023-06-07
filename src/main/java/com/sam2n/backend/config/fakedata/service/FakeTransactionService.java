@@ -1,9 +1,8 @@
-package com.sam2n.backend.fakedata.service;
+package com.sam2n.backend.config.fakedata.service;
 
 import com.sam2n.backend.domain.Activity;
 import com.sam2n.backend.domain.MoneyRecipient;
 import com.sam2n.backend.domain.Transaction;
-import com.sam2n.backend.domain.Transaction.TransactionBuilder;
 import com.sam2n.backend.domain.User;
 import com.sam2n.backend.domain.enumeration.TransactionState;
 import com.sam2n.backend.domain.enumeration.TransactionType;
@@ -21,8 +20,8 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import static com.sam2n.backend.config.DataBaseConfig.CREATED_BY_USER;
 import static com.sam2n.backend.config.Profiles.LOCAL;
+import static com.sam2n.backend.config.fakedata.LocalFakeDataInitializer.FAKER_USER;
 
 @Service
 @Profile(LOCAL)
@@ -67,11 +66,11 @@ public class FakeTransactionService {
     }
 
     private Transaction generateFakeTransaction(TransactionType transactionType, User user, Activity activity, MoneyRecipient moneyRecipient) {
-        TransactionBuilder transactionBuilder = Transaction.builder()
+        var transactionBuilder = Transaction.builder()
                 .transactionType(transactionType)
                 .amount(random.nextDouble(1, 10))
                 .wallet(user.getWallet())
-                .createdBy(CREATED_BY_USER);
+                .createdBy(FAKER_USER);
 
         if (Objects.requireNonNull(transactionType) == TransactionType.DONATION) {
             TransactionState randomTransactionState = TransactionState.values()[random.nextInt(TransactionState.values().length)];

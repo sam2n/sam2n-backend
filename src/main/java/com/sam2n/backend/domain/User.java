@@ -26,6 +26,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
+@Table(name = "sam2n_users")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class User extends AbstractAuditingEntity implements Serializable, UserDetails {
 
@@ -58,7 +59,6 @@ public class User extends AbstractAuditingEntity implements Serializable, UserDe
     @Size(min = 5, max = 254)
     @Column(length = 254, unique = true)
     private String email;
-    @NotNull
     @Column(nullable = false)
     @Builder.Default
     private boolean activated = false;

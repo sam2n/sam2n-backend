@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum AuthorityType {
-    USER("USER"),
-    ADMIN("ADMIN");
-    private final String name;
+    USER("user", "users"),
+    ADMIN("admin", "admins");
+    private final String dbName;
+    private final String claimName;
 }

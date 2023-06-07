@@ -34,7 +34,7 @@ public class LoggingAopConfig {
     @Pointcut("within(com.sam2n.backend.repository..*)"
             + " || within(com.sam2n.backend.service..*)"
             + " || within(com.sam2n.backend.controller..*)"
-            + " || within(com.sam2n.backend.fakedata.*)" )
+            + " || within(com.sam2n.backend.config.*)")
     public void applicationPackagePointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.
     }

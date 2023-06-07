@@ -1,4 +1,4 @@
-package com.sam2n.backend.fakedata;
+package com.sam2n.backend.config.fakedata;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

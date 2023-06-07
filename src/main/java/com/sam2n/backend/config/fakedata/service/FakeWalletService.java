@@ -1,4 +1,4 @@
-package com.sam2n.backend.fakedata.service;
+package com.sam2n.backend.config.fakedata.service;
 
 import com.sam2n.backend.domain.User;
 import com.sam2n.backend.domain.Wallet;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Random;
 
-import static com.sam2n.backend.config.DataBaseConfig.CREATED_BY_USER;
 import static com.sam2n.backend.config.Profiles.LOCAL;
+import static com.sam2n.backend.config.fakedata.LocalFakeDataInitializer.FAKER_USER;
 
 @Service
 @Profile(LOCAL)
@@ -32,7 +32,7 @@ public class FakeWalletService {
     private Wallet generateWallet(User user) {
         return Wallet.builder()
                 .amount(BigDecimal.valueOf(random.nextInt(100, 10000)))
-                .user(user).createdBy(CREATED_BY_USER)
+                .user(user).createdBy(FAKER_USER)
                 .build();
     }
 }

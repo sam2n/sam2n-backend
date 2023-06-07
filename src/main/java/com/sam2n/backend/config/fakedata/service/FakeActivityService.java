@@ -1,6 +1,5 @@
-package com.sam2n.backend.fakedata.service;
+package com.sam2n.backend.config.fakedata.service;
 
-import com.github.javafaker.Faker;
 import com.sam2n.backend.domain.Activity;
 import com.sam2n.backend.domain.FitnessAccount;
 import com.sam2n.backend.domain.enumeration.ActivityState;
@@ -17,8 +16,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import static com.sam2n.backend.config.DataBaseConfig.CREATED_BY_USER;
 import static com.sam2n.backend.config.Profiles.LOCAL;
+import static com.sam2n.backend.config.fakedata.LocalFakeDataInitializer.FAKER_USER;
 
 @Service
 @Profile(LOCAL)
@@ -26,7 +25,6 @@ import static com.sam2n.backend.config.Profiles.LOCAL;
 @Slf4j
 public class FakeActivityService {
     private static final Random random = new Random();
-    private final Faker faker = Faker.instance();
     private final ActivityRepository activityRepository;
 
     public List<Activity> generateAndSave(List<FitnessAccount> fitnessAccounts, int amountPerUser) {
@@ -42,19 +40,19 @@ public class FakeActivityService {
 
     private List<Activity> generateAndSave(FitnessAccount fitnessAccount, int amountPerUser) {
         return IntStream.rangeClosed(1, amountPerUser)
-                .mapToObj(n -> generateFakeActivityForFitnessAccount(fitnessAccount))
+                .mapToObj(n -> generateFakeActivityForFitnessAccount(fitnessAccount, n))
                 .toList();
     }
 
-    private Activity generateFakeActivityForFitnessAccount(FitnessAccount fitnessAccount) {
+    private Activity generateFakeActivityForFitnessAccount(FitnessAccount fitnessAccount, int number) {
         return Activity.builder()
                 .account(fitnessAccount)
                 .activityState(ActivityState.values()[random.nextInt(ActivityState.values().length)])
-                .createdBy(CREATED_BY_USER)
+                .createdBy(FAKER_USER)
                 .calories(random.nextInt(100, 1000))
                 .distance(random.nextDouble(1, 20))
-                .title("Activity on the street: " + faker.address().streetName())
-                .link(faker.internet().url())
+                .title("Activity on the street: " + number)
+                .link(fitnessAccount.getUrl() + "/activities/" + number)
                 .sportType(SportType.values()[random.nextInt(SportType.values().length)])
                 .movingTime(Duration.ofMinutes(random.nextInt(100)))
                 .avgPace(random.nextDouble(4, 10))

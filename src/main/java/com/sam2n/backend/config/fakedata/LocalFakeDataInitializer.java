@@ -1,7 +1,7 @@
-package com.sam2n.backend.fakedata;
+package com.sam2n.backend.config.fakedata;
 
+import com.sam2n.backend.config.fakedata.service.*;
 import com.sam2n.backend.domain.*;
-import com.sam2n.backend.fakedata.service.*;
 import com.sam2n.backend.service.AuthorityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,12 +31,15 @@ public class LocalFakeDataInitializer {
     private final FakeTransactionService fakeTransactionService;
     private final FakeDataAmountConfigurationProperties fakeDataAmount;
 
+    // Regex for acceptable logins
+    public static final String FAKER_USER = "FAKER";
+
     @Bean
     public CommandLineRunner initFakeData() {
         return args -> generateFakeDBData();
     }
 
-    private int generateFakeDBData() {
+    private void generateFakeDBData() {
         /* ORGANISATIONS */
         List<Company> fakeCompanies = fakeCompanyService.generateAndSave(fakeDataAmount.getCompanies());
         List<MoneyRecipient> fakeMoneyRecipients = fakeMoneyRecipientService.generateAndSave(fakeDataAmount.getMoneyRecipients());
@@ -69,9 +72,10 @@ public class LocalFakeDataInitializer {
         log.debug(">>> Available credentials of admins to login: ");
         fakeAdmins.forEach(a -> log.debug(">>>      Admin name: " + a.getLogin() + ", password: " + a.getLogin()));
 
-        return /* ORGANISATIONS */ fakeCompanies.size() + fakeMoneyRecipients.size()
+        log.warn(">>> Final amount of generated records is: " +
+                /* ORGANISATIONS */ fakeCompanies.size() + fakeMoneyRecipients.size()
                 /* USERS & ACCOUNTS */ + realAuthorities.size() + fakeUsers.size() + fakeAdmins.size() + fakeFitnessAccounts.size() + fakeActivities.size()
-                /* TRANSACTIONS */ + fakeTransactionsWithActivities.size() + fakeTransactionsWithDonations.size();
+                /* TRANSACTIONS */ + fakeTransactionsWithActivities.size() + fakeTransactionsWithDonations.size());
     }
 
 }
