@@ -42,15 +42,15 @@ public class LocalFakeDataInitializer {
         List<MoneyRecipient> fakeMoneyRecipients = fakeMoneyRecipientService.generateAndSave(fakeDataAmount.getMoneyRecipients());
 
         /* USERS & ACCOUNTS */
-        List<Authority> realAuthorities = authorityService.initAndSave(USER.getName(), ADMIN.getName());
+        List<Authority> realAuthorities = authorityService.initAndSave(USER.getDbName(), ADMIN.getDbName());
         Authority userAuthority = realAuthorities.stream()
-                .filter(a -> a.getName().equalsIgnoreCase(USER.getName()))
+                .filter(a -> a.getName().equalsIgnoreCase(USER.getDbName()))
                 .findFirst()
                 .orElse(null);
         List<User> fakeUsers = fakeUserService.generateAndSave(fakeCompanies, userAuthority, fakeDataAmount.getUsers());
 
         Authority adminAuthority = realAuthorities.stream()
-                .filter(a -> a.getName().equalsIgnoreCase(ADMIN.getName()))
+                .filter(a -> a.getName().equalsIgnoreCase(ADMIN.getDbName()))
                 .findFirst()
                 .orElse(null);
         List<User> fakeAdmins = fakeUserService.generateAndSave(fakeCompanies, adminAuthority);
