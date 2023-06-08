@@ -63,4 +63,4 @@ http://localhost:9669/actuator/health
 - **POST** new activity: `http://localhost:8668/api/v1/users`
 
   Body type: `raw json` E.g.: `"http://google.com"`
- 
+
