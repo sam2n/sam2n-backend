@@ -1,0 +1,63 @@
+server:
+  port: 8668
+
+# Logs
+logging:
+  level:
+    #    ROOT: DEBUG
+    com.sam2n.backend: trace
+    org.springframework.security: trace
+    sql: debug
+    org.hibernate.orm.jdbc.bind: trace
+
+# Spring
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:file:./build/h2db/db/sam2n
+    driver-class-name: org.h2.Driver
+  sql:
+    init:
+      platform: h2
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+  # Security
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_gzGRpukuj
+          jwk-set-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_gzGRpukuj/.well-known/jwks.json
+
+# Actuator
+management:
+  server:
+    port: 9669
+  endpoints:
+    web:
+      exposure:
+        include: openapi, swagger-ui
+
+# OpenAPI
+springdoc:
+  use-management-port: true
+  show-actuator: true
+
+# Application level properties
+sam2n:
+  fake-data:
+    generate: true # fake data is generated depends this parameter
+    amount-of:
+      companies: 8
+      money-recipients: 5
+      users: 30
+      per-user-activities: 3
+      donations: 30

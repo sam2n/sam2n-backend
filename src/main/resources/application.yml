@@ -1,0 +1,6 @@
+# Spring
+spring:
+  application:
+    name: sam2n
+  profiles:
+    default: local
